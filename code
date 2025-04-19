@@ -33,7 +33,7 @@ end))
 local CoreGui = game:GetService("CoreGui")
 local ExistingGui = CoreGui:WaitForChild("FAKillTasks", 0.5)
 if ExistingGui then
-	ExistingGui:Destroy()
+	return
 end
 local ScreenGui = Instance.new("ScreenGui", CoreGui)
 ScreenGui.Name = "FAKillTasks"
