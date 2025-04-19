@@ -1,0 +1,69 @@
+local Player = game:GetService("Players").LocalPlayer
+local character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = character:WaitForChild("Humanoid", 5)
+if not Humanoid then return end
+
+local DelayTime = 3 -- Set Delay Here
+
+_G.FLingAllTasks = _G.FLingAllTasks or {}
+
+for _, Task in ipairs(_G.FLingAllTasks) do
+	task.cancel(Task)
+end
+
+_G.FLingAllTasks = {}
+
+table.insert(_G.FLingAllTasks, task.defer(function()
+	while character:IsDescendantOf(game) do
+		local success, result = pcall(function()
+			return game:HttpGet("https://raw.githubusercontent.com/richfloppa/rich-hub/main/fling-all", true)
+		end)
+
+		if success and result then
+			local flingFunc = loadstring(result)
+			if flingFunc then
+				pcall(flingFunc)
+			end
+		end
+
+		task.wait(DelayTime)
+	end
+end))
+
+local CoreGui = game:GetService("CoreGui")
+local ExistingGui = CoreGui:WaitForChild("FAKillTasks", 0.5)
+if ExistingGui then
+	ExistingGui:Destroy()
+end
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = "FAKillTasks"
+local Button = Instance.new("TextButton", ScreenGui)
+Button.Position = UDim2.new(0.8296296, 0, 0.00961538497, 0)
+Button.Size = UDim2.new(0.162962958, 0, 0.056089744, 0)
+Button.Font = Enum.Font.FredokaOne
+Button.RichText = true
+Button.TextScaled = true
+Button.TextWrapped = true
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.TextStrokeTransparency = 0
+Button.Text = "Stop Flinging"
+Button.Draggable = true
+Button.BackgroundColor3 = Color3.fromRGB(50,50,50)
+Button.MouseButton1Click:Connect(function()
+	_G.FLingAllTasks = _G.FLingAllTasks or {}
+	
+	for _, Task in ipairs(_G.FLingAllTasks) do
+		task.cancel(Task)
+	end
+	_G.FLingAllTasks = {}
+end)
+local ButtonUIStroke = Instance.new("UIStroke", Button)
+ButtonUIStroke.Thickness = 2
+ButtonUIStroke.Color = Color3.new(0,0,0)
+ButtonUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+local BorderUIStroke = Instance.new("UIStroke", Button)
+BorderUIStroke.Thickness = 2
+BorderUIStroke.Color = Color3.new(0,0,0)
+BorderUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+local UICorner = Instance.new("UICorner", Button)
+UICorner.CornerRadius = UDim.new(0, 8)
